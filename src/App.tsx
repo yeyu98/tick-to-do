@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import { Layout, Menu } from 'antd'
 import { Outlet, useNavigate, useLocation } from 'react-router'
+import useCurrentMatch from './hooks/useCurrentMatch'
+
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -27,13 +29,13 @@ const menu = [
 const App = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-
   const [collapsed, setCollapsed] = useState(false)
+  const { getCurrentHandle } = useCurrentMatch<unknown, { title: string }>()
+  const title = getCurrentHandle()?.title
 
   const currentRoute = useMemo(
     () => (pathname ? pathname.replace(/\//, '') : ''),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [pathname],
   )
 
   const handleSelect = (item: any) => {
@@ -70,7 +72,7 @@ const App = () => {
             ) : null}
           </Header>
           <Content className={styles.content}>
-            {/* <h3>{navigation.}</h3> */}
+            <h3>{title}</h3>
             <Outlet />
           </Content>
         </Layout>
