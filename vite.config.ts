@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite'
-import eslintPlugin from ''
 import react from '@vitejs/plugin-react-swc'
 import path from 'path'
 
