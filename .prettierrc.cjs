@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 10:35:05
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-12 10:53:49
+ * @LastEditTime: 2024-09-12 11:43:39
  * @FilePath: \template-vite-react-ts-tailwind\.prettierrc.cjs
  * @Description: 
  */
@@ -18,11 +18,6 @@ module.exports = {
   arrowParens: 'always',
   jsxBracketSameLine: false,
   endOfLine: 'lf',
-  tailwindConfig: './tailwind.config.js',
-  // 对非标准属性进行排序
-  tailwindAttributes: ['wrapperClassName', 'wrapClassName', 'rootClassName'],
-  // 对函数调用中的类进行排序
-  tailwindFunctions: ['classNames', 'classnames', 'twMerge'],
   overrides: [
     {
       files: '.prettierrc',
@@ -31,5 +26,4 @@ module.exports = {
       },
     },
   ],
-  plugins: ['prettier-plugin-tailwindcss'],
 }
