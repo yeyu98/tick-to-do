@@ -72,7 +72,7 @@ const App = () => {
             ) : null}
           </Header>
           <Content className={styles.content}>
-            <h3>{title}</h3>
+            <h1>{title}</h1>
             <Outlet />
           </Content>
         </Layout>

@@ -9,6 +9,7 @@ interface Match<T, U> {
 export default <T = unknown, U = unknown>(): Match<T, U> => {
   const matches = useMatches()
   const current = matches[matches.length - 1] as UIMatch<T, U>
+  console.log('✨✨🥰  ~ current--->>>', current)
 
   const getCurrentHandle = () => current.handle
   return {
