@@ -47,13 +47,14 @@ const App = () => {
             items={menu}
           />
         </Sider>
-        <Content className={styles.content}>
+        <Layout>
           <Header className={styles['content-header']}>
             {collapsed ? (
               <MenuUnfoldOutlined onClick={() => setCollapsed(false)} />
             ) : null}
           </Header>
-        </Content>
+          <Content className={styles.content}></Content>
+        </Layout>
       </Layout>
     </>
   )
