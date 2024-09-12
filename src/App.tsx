@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Layout, Menu } from 'antd'
-import { Outlet, useNavigate } from 'react-router'
+import { Outlet, useNavigate, useLocation } from 'react-router'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -26,8 +26,15 @@ const menu = [
 
 const App = () => {
   const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   const [collapsed, setCollapsed] = useState(false)
+
+  const currentRoute = useMemo(
+    () => (pathname ? pathname.replace(/\//, '') : ''),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  )
 
   const handleSelect = (item: any) => {
     navigate(`/${item.key}`)
@@ -51,7 +58,7 @@ const App = () => {
           <Menu
             theme="light"
             mode="inline"
-            defaultSelectedKeys={['today']}
+            defaultSelectedKeys={[currentRoute]}
             items={menu}
             onSelect={handleSelect}
           />

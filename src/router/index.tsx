@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:14:27
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-12 17:10:12
+ * @LastEditTime: 2024-09-12 17:47:08
  * @FilePath: \tick-to-do\src\router\index.tsx
  * @Description:
  */
@@ -11,6 +11,7 @@ import FullScreenLoading from '@/components/FullScreenLoading'
 import { createBrowserRouter } from 'react-router-dom'
 
 const SuspenseComponent = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Component: React.LazyExoticComponent<(props?: any) => JSX.Element>,
 ) => {
   return (
