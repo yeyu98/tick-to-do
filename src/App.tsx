@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Layout, Menu } from 'antd'
+import { Outlet, useNavigate } from 'react-router'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -23,11 +24,14 @@ const menu = [
   },
 ]
 
-const handleSelect = (item: any) => {
-  console.log('🥳🥳🥳 ~~ handleSelect ~~ item--->>>', item)
-}
 const App = () => {
+  const navigate = useNavigate()
+
   const [collapsed, setCollapsed] = useState(false)
+
+  const handleSelect = (item: any) => {
+    navigate(`/${item.key}`)
+  }
 
   return (
     <>
@@ -58,7 +62,9 @@ const App = () => {
               <MenuUnfoldOutlined onClick={() => setCollapsed(false)} />
             ) : null}
           </Header>
-          <Content className={styles.content}></Content>
+          <Content className={styles.content}>
+            <Outlet />
+          </Content>
         </Layout>
       </Layout>
     </>
