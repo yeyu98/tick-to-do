@@ -6,10 +6,17 @@
   box-sizing: border-box;
   padding: 0 8px;
   .sider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
     padding: 0 4px;
   }
   :global(.ant-menu-root.ant-menu-inline) {
     border-inline-end: none;
+  }
+  :global(.ant-menu-item) {
+    padding-left: 8px !important;
   }
 }
 

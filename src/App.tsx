@@ -33,11 +33,11 @@ const App = () => {
           className={styles.sider}
           theme="light"
           collapsedWidth={0}
-          width={210}
           collapsible
           collapsed={collapsed}
         >
           <Header className={styles['sider-header']}>
+            <span>To-Do-List</span>
             <MenuFoldOutlined onClick={() => setCollapsed(true)} />
           </Header>
           <Menu
