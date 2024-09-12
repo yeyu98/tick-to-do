@@ -1,9 +1,8 @@
 import { useState } from 'react'
+import './App.less'
 
 const App = () => {
-  return (
-    <div className="flex h-8 w-8 items-center justify-center bg-primary"></div>
-  )
+  return <div className="container">123</div>
 }
 
 export default App
