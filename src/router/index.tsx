@@ -2,16 +2,16 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:14:27
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-12 17:04:04
+ * @LastEditTime: 2024-09-12 17:10:12
  * @FilePath: \tick-to-do\src\router\index.tsx
  * @Description:
  */
-import { Children, lazy, Suspense } from 'react'
+import { lazy, Suspense } from 'react'
 import FullScreenLoading from '@/components/FullScreenLoading'
-import { createBrowserRouter, redirect } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 
 const SuspenseComponent = (
-  Component: React.LazyExoticComponent<() => JSX.Element>,
+  Component: React.LazyExoticComponent<(props?: any) => JSX.Element>,
 ) => {
   return (
     <Suspense fallback={<FullScreenLoading immediatelyTrigger={true} />}>
@@ -33,10 +33,16 @@ const baseRoute = [
       {
         path: 'today',
         element: SuspenseComponent(Today),
+        meta: {
+          title: '今天',
+        },
       },
       {
         path: 'filter',
         element: SuspenseComponent(Filter),
+        meta: {
+          title: '过滤器',
+        },
       },
     ],
   },

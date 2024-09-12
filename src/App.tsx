@@ -63,6 +63,7 @@ const App = () => {
             ) : null}
           </Header>
           <Content className={styles.content}>
+            {/* <h3>{navigation.}</h3> */}
             <Outlet />
           </Content>
         </Layout>
