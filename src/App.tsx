@@ -12,16 +12,20 @@ const { Sider, Content, Header } = Layout
 
 const menu = [
   {
-    key: '1',
+    key: 'today',
     icon: <CalendarOutlined />,
     label: '今天',
   },
   {
-    key: '2',
+    key: 'filter',
     icon: <AppstoreOutlined />,
     label: '过滤器',
   },
 ]
+
+const handleSelect = (item: any) => {
+  console.log('🥳🥳🥳 ~~ handleSelect ~~ item--->>>', item)
+}
 const App = () => {
   const [collapsed, setCollapsed] = useState(false)
 
@@ -43,8 +47,9 @@ const App = () => {
           <Menu
             theme="light"
             mode="inline"
-            defaultSelectedKeys={['1']}
+            defaultSelectedKeys={['today']}
             items={menu}
+            onSelect={handleSelect}
           />
         </Sider>
         <Layout>
