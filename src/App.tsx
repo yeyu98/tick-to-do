@@ -1,67 +1,59 @@
 import { useState } from 'react'
-import { Button, Layout, Menu, theme } from 'antd'
-import './App.less'
+import { Layout, Menu } from 'antd'
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  AppstoreOutlined,
+  CalendarOutlined,
+} from '@ant-design/icons'
+import styles from './App.module.less'
 
-const { Header, Sider, Content } = Layout
-const [collapsed, setCollapsed] = useState(false)
-const {
-  token: { colorBgContainer, borderRadiusLG },
-} = theme.useToken()
+const { Sider, Content, Header } = Layout
 
+const menu = [
+  {
+    key: '1',
+    icon: <CalendarOutlined />,
+    label: '今天',
+  },
+  {
+    key: '2',
+    icon: <AppstoreOutlined />,
+    label: '过滤器',
+  },
+]
 const App = () => {
+  const [collapsed, setCollapsed] = useState(false)
+
   return (
     <>
       <Layout>
-        <Sider trigger={null} collapsible collapsed={collapsed}>
-          <div className="demo-logo-vertical" />
+        <Sider
+          trigger={null}
+          className={styles.sider}
+          theme="light"
+          collapsedWidth={0}
+          width={210}
+          collapsible
+          collapsed={collapsed}
+        >
+          <Header className={styles['sider-header']}>
+            <MenuFoldOutlined onClick={() => setCollapsed(true)} />
+          </Header>
           <Menu
-            theme="dark"
+            theme="light"
             mode="inline"
             defaultSelectedKeys={['1']}
-            items={[
-              {
-                key: '1',
-                icon: <UserOutlined />,
-                label: 'nav 1',
-              },
-              {
-                key: '2',
-                icon: <VideoCameraOutlined />,
-                label: 'nav 2',
-              },
-              {
-                key: '3',
-                icon: <UploadOutlined />,
-                label: 'nav 3',
-              },
-            ]}
+            items={menu}
           />
         </Sider>
-        <Layout>
-          <Header style={{ padding: 0, background: colorBgContainer }}>
-            <Button
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
-              style={{
-                fontSize: '16px',
-                width: 64,
-                height: 64,
-              }}
-            />
+        <Content className={styles.content}>
+          <Header className={styles['content-header']}>
+            {collapsed ? (
+              <MenuUnfoldOutlined onClick={() => setCollapsed(false)} />
+            ) : null}
           </Header>
-          <Content
-            style={{
-              margin: '24px 16px',
-              padding: 24,
-              minHeight: 280,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
-            Content
-          </Content>
-        </Layout>
+        </Content>
       </Layout>
     </>
   )
