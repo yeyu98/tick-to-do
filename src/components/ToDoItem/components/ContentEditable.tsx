@@ -2,11 +2,11 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-13 11:49:14
+ * @LastEditTime: 2024-09-13 14:55:27
  * @FilePath: \tick-to-do\src\components\ToDoItem\components\ContentEditable.tsx
  * @Description:
  */
-import { useRef, useEffect, ReactNode } from 'react'
+import { useRef, useEffect, ReactNode, FC } from 'react'
 import classnames from 'classnames'
 import styles from './ContentEditable.module.less'
 
@@ -17,15 +17,20 @@ interface Props {
   suffix?: ReactNode
   disabled?: boolean
   placeholder?: string
+  className?: string
 }
 
-function ContentEditable(props: Props) {
-  const { value, disabled = false, placeholder = '' } = props
+// placeholder如何监听
+// 换行
+// disabled样式问题
+const ContentEditable: FC<Props> = (props) => {
+  const { value, disabled = false, className = '' } = props
   const textRef = useRef<HTMLDivElement | null>(null)
 
   const classNames = classnames([
     styles.container,
     disabled ? styles.disabled : '',
+    className,
   ])
 
   const handleBlur = (e: any) => {
@@ -49,13 +54,18 @@ function ContentEditable(props: Props) {
   return (
     <>
       <div className={classNames}>
-        <div
-          ref={textRef}
-          className={styles.contentEditable}
-          onBlur={handleBlur}
-          onFocus={handleFocus}
-          contentEditable={!disabled}
-        ></div>
+        <div className={styles.wrapper}>
+          <div
+            ref={textRef}
+            className={styles.contentEditable}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            contentEditable={!disabled}
+          ></div>
+          {/* {placeholder && !value && (
+            <span className={styles.placeholder}>{placeholder}</span>
+          )} */}
+        </div>
         <div className={styles.suffix}>{props.suffix}</div>
       </div>
     </>

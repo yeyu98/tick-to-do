@@ -9,10 +9,18 @@
   &.disabled {
     color: #19191933;
   }
-  .contentEditable {
+  .wrapper {
+    position: relative;
     flex: 1;
-    outline: none;
-    padding: 8px 0;
+    .contentEditable {
+      outline: none;
+      padding: 8px 0;
+    }
+    .placeholder {
+      position: absolute;
+      top: 8px;
+      color: #19191966;
+    }
   }
 
   .suffix {
