@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-13 23:25:33
+ * @LastEditTime: 2024-09-13 23:28:59
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -44,16 +44,19 @@ function Today(props: Props) {
   }
 
   const handleChange = (id: string, value: string) => {
-    const newTask = taskList.find((item) => {
-      item.id = id
-    })
-    setTaskList([
-      ...taskList,
-      {
-        ...newTask!,
-        taskContent: value,
-      },
-    ])
+    console.log('✨✨🥰  ~ newTask ~ taskList--->>>', taskList, id)
+
+    const newTask = taskList.find((item) => item.id === id)
+    console.log('✨✨🥰  ~ handleChange ~ newTask--->>>', newTask)
+    if (newTask) {
+      setTaskList([
+        ...taskList,
+        {
+          ...newTask,
+          taskContent: value,
+        },
+      ])
+    }
   }
 
   const renderTaskList = () => {
