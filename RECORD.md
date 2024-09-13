@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 22:50:43
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-12 22:51:51
+ * @LastEditTime: 2024-09-13 21:56:57
  * @Description: 
 -->
 # 问题记录
@@ -12,5 +12,6 @@
     - 2.通过react-router里的handle，传入之后通过useMatches来获取，只能在createBrowserRouter中使用
 
 - 换行问题，输入数字或字母时无法自动换行
+- 限制输入不能有标签
 - 无内容disabled样式问题
 - placeholder如何监听

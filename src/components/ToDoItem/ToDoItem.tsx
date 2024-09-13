@@ -2,30 +2,38 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-13 15:00:16
+ * @LastEditTime: 2024-09-13 23:22:07
  * @FilePath: \tick-to-do\src\components\ToDoItem\TodoItem.tsx
  * @Description:
  */
 import { useState } from 'react'
 import { Checkbox } from 'antd'
 import ContentEditable from './components/ContentEditable'
+import classnames from 'classnames'
 import styles from './ToDoItem.module.less'
 
-interface Props {}
+interface Props {
+  className?: string
+  onChange?: (value: string) => void
+}
 
-function TodoItem() {
+function TodoItem(props: Props) {
+  const { className = '' } = props
   const [disabled, setDisabled] = useState(false)
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState('a\n')
+  const classNames = classnames([styles['todo-item'], className])
   const handleBlur = (value: string) => {
     console.log('🥳🥳🥳 ~~ handleBlur ~~ value--->>>', value)
   }
 
   const handleChange = (value: string) => {
     setValue(value)
+    props.onChange?.(value)
   }
+
   return (
     <>
-      <div className={styles['todo-item']}>
+      <div className={classNames}>
         <Checkbox
           className={styles.checkbox}
           checked={disabled}
@@ -34,9 +42,9 @@ function TodoItem() {
         <ContentEditable
           value={value}
           className={styles['todo-item-content']}
-          placeholder={'请输入'}
+          placeholder={'嘿，朋友今天想做些什么呢？'}
           onChange={handleChange}
-          disabled={disabled} // true
+          disabled={disabled}
           onBlur={handleBlur}
         />
       </div>

@@ -1,0 +1,34 @@
+.today-container {
+    display: flex;
+    flex-direction: column;
+    .add-item {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        margin: 12px 0;
+        
+        &-icon {
+            color: var(--primary-color);
+            margin-right: 8px;
+            padding: 2px;
+        }
+        &-text {
+            color: #808080;
+        }
+
+        &:hover {
+            cursor: pointer;
+            .add-item-icon {
+                color: #fff;
+                border-radius: 50%;
+                background: var(--primary-color);
+            }
+            .add-item-text {
+                color: var(--primary-color);
+            }
+        }
+    }
+    .todo-item {
+        margin: 4px 0;
+    }
+}

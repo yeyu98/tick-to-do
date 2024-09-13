@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-13 17:51:05
+ * @LastEditTime: 2024-09-13 21:58:24
  * @FilePath: \tick-to-do\src\components\ToDoItem\components\ContentEditable.tsx
  * @Description:
  */
@@ -50,10 +50,11 @@ const ContentEditable: FC<Props> = (props) => {
   }
 
   useEffect(() => {
-    if (textRef.current) {
+    if (value && textRef.current) {
       textRef.current.innerHTML = value
     }
-  }, [value])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
