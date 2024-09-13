@@ -15,8 +15,13 @@ interface Props {}
 
 function TodoItem() {
   const [disabled, setDisabled] = useState(false)
+  const [value, setValue] = useState('')
   const handleBlur = (value: string) => {
     console.log('🥳🥳🥳 ~~ handleBlur ~~ value--->>>', value)
+  }
+
+  const handleChange = (value: string) => {
+    setValue(value)
   }
   return (
     <>
@@ -27,9 +32,10 @@ function TodoItem() {
           onChange={() => setDisabled(!disabled)}
         />
         <ContentEditable
-          value={''}
+          value={value}
           className={styles['todo-item-content']}
           placeholder={'请输入'}
+          onChange={handleChange}
           disabled={disabled} // true
           onBlur={handleBlur}
         />
