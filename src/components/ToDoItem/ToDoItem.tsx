@@ -6,17 +6,14 @@
  * @FilePath: \tick-to-do\src\components\ToDoItem\TodoItem.tsx
  * @Description:
  */
-import { useRef, useImperativeHandle, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Checkbox } from 'antd'
 import ContentEditable from './components/ContentEditable'
 import styles from './ToDoItem.module.less'
 
-interface Props {
-  value: string
-  onBlur: (event: any) => void
-}
+interface Props {}
 
-function TodoItem(props: Props) {
+function TodoItem() {
   const [disabled, setDisabled] = useState(false)
   const handleBlur = (value: string) => {
     console.log('🥳🥳🥳 ~~ handleBlur ~~ value--->>>', value)
