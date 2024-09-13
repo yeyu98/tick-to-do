@@ -60,7 +60,7 @@ const App = () => {
           <Menu
             theme="light"
             mode="inline"
-            defaultSelectedKeys={[currentRoute]}
+            defaultSelectedKeys={[currentRoute || 'today']}
             items={menu}
             onSelect={handleSelect}
           />
