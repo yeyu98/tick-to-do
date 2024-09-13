@@ -21,7 +21,7 @@ function TodoItem(props: Props) {
   }
   return (
     <>
-      <ContentEditable value={'123'} onBlur={handleBlur} />
+      <ContentEditable value={'123'} disabled={true} onBlur={handleBlur} />
     </>
   )
 }
