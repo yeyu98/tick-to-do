@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-13 11:17:40
+ * @LastEditTime: 2024-09-13 11:44:47
  * @FilePath: \tick-to-do\src\components\ToDoItem\TodoItem.tsx
  * @Description:
  */
@@ -21,7 +21,12 @@ function TodoItem(props: Props) {
   }
   return (
     <>
-      <ContentEditable value={'123'} disabled={true} onBlur={handleBlur} />
+      <ContentEditable
+        value={''}
+        placeholder={'请输入'}
+        disabled={false} // true
+        onBlur={handleBlur}
+      />
     </>
   )
 }

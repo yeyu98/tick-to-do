@@ -1,13 +1,21 @@
-.contentEditable {
+.container {
   position: relative;
-  outline: none;
-  padding: 8px 0;
   border-bottom: 1px solid #1919190D;
-  &:focus {
+  display: flex;
+
+  &:focus-within {
     border-bottom: 1px solid var(--primary-color);
   }
-
   &.disabled {
     color: #19191933;
+  }
+  .contentEditable {
+    flex: 1;
+    outline: none;
+    padding: 8px 0;
+  }
+
+  .suffix {
+    padding: 8px;
   }
 }
