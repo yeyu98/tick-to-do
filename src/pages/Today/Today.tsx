@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-14 11:33:09
+ * @LastEditTime: 2024-09-14 11:43:28
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -58,7 +58,10 @@ function Today(props: Props) {
     if (current) {
       current.isFinished = finish
     }
-    const newTaskList = _taskList.sort((a, b) => b.isFinished - a.isFinished)
+    const newTaskList = _taskList.sort(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (a, b) => (b.isFinished as any) - (a.isFinished as any),
+    )
     setTaskList(newTaskList)
   }
 
