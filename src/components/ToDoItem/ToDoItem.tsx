@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-14 09:55:57
+ * @LastEditTime: 2024-09-14 10:17:19
  * @FilePath: \tick-to-do\src\components\ToDoItem\ToDoItem.tsx
  * @Description:
  */
@@ -22,6 +22,7 @@ function TodoItem(props: Props) {
   const { className = '', todoValue = '' } = props
   const [disabled, setDisabled] = useState(false)
   const [value, setValue] = useState('')
+  const preTodoValue = useRef(todoValue)
   const classNames = classnames([styles['todo-item'], className])
   const handleBlur = (value: string) => {
     console.log('🥳🥳🥳 ~~ handleBlur ~~ value--->>>', value)
@@ -33,8 +34,9 @@ function TodoItem(props: Props) {
   }
 
   useEffect(() => {
-    if (todoValue) {
+    if (preTodoValue.current !== todoValue) {
       setValue(todoValue)
+      preTodoValue.current = todoValue
     }
   }, [todoValue])
 
