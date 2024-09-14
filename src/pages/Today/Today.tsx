@@ -2,13 +2,13 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-14 09:20:49
+ * @LastEditTime: 2024-09-14 11:04:54
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
 import { useState } from 'react'
 import EmptyData from './components/EmptyData'
-import { PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import dayjs, { getWeek } from '@/utils/dayjs'
 import ToDoItem from '@/components/ToDoItem/ToDoItem'
 import { nanoid } from 'nanoid'
@@ -43,6 +43,13 @@ function Today(props: Props) {
     setTaskList([...taskList, currentTask])
   }
 
+  const deleteItem = (id: string) => {
+    const _taskList = [...taskList]
+    const currentIndex = taskList.findIndex((item) => item.id !== id)
+    _taskList.splice(currentIndex, 1)
+    setTaskList(_taskList)
+  }
+
   const handleChange = (id: string, value: string) => {
     let isExits = false
     const _taskList = [...taskList]
@@ -65,6 +72,12 @@ function Today(props: Props) {
           className={styles['todo-item']}
           onChange={(value: string) => handleChange(item.id, value)}
           key={item.id}
+          suffix={
+            <DeleteOutlined
+              className={styles['delete-icon']}
+              onClick={() => deleteItem(item.id)}
+            />
+          }
         />
       )
     })

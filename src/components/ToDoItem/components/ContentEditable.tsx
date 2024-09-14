@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-13 21:58:24
+ * @LastEditTime: 2024-09-14 10:46:35
  * @FilePath: \tick-to-do\src\components\ToDoItem\components\ContentEditable.tsx
  * @Description:
  */
@@ -24,7 +24,14 @@ interface Props {
 }
 
 const ContentEditable: FC<Props> = (props) => {
-  const { value, disabled = false, className = '', placeholder = '' } = props
+  const {
+    value,
+    disabled = false,
+    className = '',
+    placeholder = '',
+    suffix = '',
+  } = props
+  console.log('🥳🥳🥳 ~~ props--->>>', props)
   const textRef = useRef<HTMLDivElement | null>(null)
 
   const classNames = classnames([
@@ -73,7 +80,7 @@ const ContentEditable: FC<Props> = (props) => {
             <span className={styles.placeholder}>{placeholder}</span>
           )}
         </div>
-        <div className={styles.suffix}>{props.suffix}</div>
+        {suffix ? <div className={styles.suffix}>{suffix}</div> : null}
       </div>
     </>
   )

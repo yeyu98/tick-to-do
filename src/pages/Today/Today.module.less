@@ -26,9 +26,19 @@
             .add-item-text {
                 color: var(--primary-color);
             }
+            
         }
     }
     .todo-item {
         margin: 4px 0;
+        .delete-icon {
+            display: none;
+            cursor: pointer;
+        }
+        &:hover {
+            & .delete-icon {
+                display: block;
+            }
+        }
     }
 }
