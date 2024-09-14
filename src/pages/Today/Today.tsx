@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-14 11:43:28
+ * @LastEditTime: 2024-09-14 11:48:35
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -24,7 +24,27 @@ interface Task {
 }
 
 function Today(props: Props) {
-  const [taskList, setTaskList] = useState<Task[]>([])
+  const defaultList = [
+    {
+      id: 1,
+      timestamp: Date.now(),
+      taskContent: '123',
+      isFinished: false,
+    },
+    {
+      id: 2,
+      timestamp: Date.now(),
+      taskContent: '456',
+      isFinished: false,
+    },
+    {
+      id: 3,
+      timestamp: Date.now(),
+      taskContent: '789',
+      isFinished: false,
+    },
+  ]
+  const [taskList, setTaskList] = useState<Task[]>([...defaultList])
   const formatDate = () => {
     const timestamp = Date.now()
     const week = getWeek(timestamp)
@@ -47,7 +67,7 @@ function Today(props: Props) {
 
   const deleteItem = (id: string) => {
     const _taskList = [...taskList]
-    const currentIndex = taskList.findIndex((item) => item.id !== id)
+    const currentIndex = taskList.findIndex((item) => item.id == id)
     _taskList.splice(currentIndex, 1)
     setTaskList(_taskList)
   }
@@ -85,7 +105,7 @@ function Today(props: Props) {
       return (
         <ToDoItem
           className={styles['todo-item']}
-          onFinishChange={(finish: string) => handleFinish(item.id, finish)}
+          onFinishChange={(finish: boolean) => handleFinish(item.id, finish)}
           onChange={(value: string) => handleChange(item.id, value)}
           key={item.id}
           suffix={
