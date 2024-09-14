@@ -2,25 +2,26 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-13 23:22:07
- * @FilePath: \tick-to-do\src\components\ToDoItem\TodoItem.tsx
+ * @LastEditTime: 2024-09-14 09:55:57
+ * @FilePath: \tick-to-do\src\components\ToDoItem\ToDoItem.tsx
  * @Description:
  */
-import { useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Checkbox } from 'antd'
 import ContentEditable from './components/ContentEditable'
 import classnames from 'classnames'
 import styles from './ToDoItem.module.less'
 
 interface Props {
+  todoValue?: string
   className?: string
   onChange?: (value: string) => void
 }
 
 function TodoItem(props: Props) {
-  const { className = '' } = props
+  const { className = '', todoValue = '' } = props
   const [disabled, setDisabled] = useState(false)
-  const [value, setValue] = useState('a\n')
+  const [value, setValue] = useState('')
   const classNames = classnames([styles['todo-item'], className])
   const handleBlur = (value: string) => {
     console.log('🥳🥳🥳 ~~ handleBlur ~~ value--->>>', value)
@@ -30,6 +31,12 @@ function TodoItem(props: Props) {
     setValue(value)
     props.onChange?.(value)
   }
+
+  useEffect(() => {
+    if (todoValue) {
+      setValue(todoValue)
+    }
+  }, [todoValue])
 
   return (
     <>
