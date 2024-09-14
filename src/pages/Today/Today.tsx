@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-14 11:48:35
+ * @LastEditTime: 2024-09-14 17:09:35
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -44,7 +44,7 @@ function Today(props: Props) {
       isFinished: false,
     },
   ]
-  const [taskList, setTaskList] = useState<Task[]>([...defaultList])
+  const [taskList, setTaskList] = useState<Task[]>([])
   const formatDate = () => {
     const timestamp = Date.now()
     const week = getWeek(timestamp)
