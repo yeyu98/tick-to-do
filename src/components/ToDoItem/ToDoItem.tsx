@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-14 10:17:19
+ * @LastEditTime: 2024-09-14 10:21:40
  * @FilePath: \tick-to-do\src\components\ToDoItem\ToDoItem.tsx
  * @Description:
  */
@@ -28,6 +28,9 @@ function TodoItem(props: Props) {
     console.log('🥳🥳🥳 ~~ handleBlur ~~ value--->>>', value)
   }
 
+  const handleFocus = (e: any) => {
+    console.log('👀👀👀 ~~ handleFocus ~~ e--->>>', e)
+  }
   const handleChange = (value: string) => {
     setValue(value)
     props.onChange?.(value)
@@ -55,6 +58,7 @@ function TodoItem(props: Props) {
           onChange={handleChange}
           disabled={disabled}
           onBlur={handleBlur}
+          onFocus={handleFocus}
         />
       </div>
     </>
