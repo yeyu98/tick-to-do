@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 22:50:43
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-13 21:56:57
+ * @LastEditTime: 2024-09-14 10:25:35
  * @Description: 
 -->
 # 问题记录
@@ -14,4 +14,4 @@
 - 换行问题，输入数字或字母时无法自动换行
 - 限制输入不能有标签
 - 无内容disabled样式问题
-- placeholder如何监听
+- 点击placeholder无法聚焦问题
