@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-14 11:04:54
+ * @LastEditTime: 2024-09-14 11:33:09
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -20,6 +20,7 @@ interface Task {
   id: string
   timestamp: number
   taskContent: string
+  isFinished: boolean
 }
 
 function Today(props: Props) {
@@ -39,6 +40,7 @@ function Today(props: Props) {
       id,
       timestamp: Date.now(),
       taskContent: '',
+      isFinished: false,
     }
     setTaskList([...taskList, currentTask])
   }
@@ -48,6 +50,16 @@ function Today(props: Props) {
     const currentIndex = taskList.findIndex((item) => item.id !== id)
     _taskList.splice(currentIndex, 1)
     setTaskList(_taskList)
+  }
+
+  const handleFinish = (id: string, finish: boolean) => {
+    const _taskList = [...taskList]
+    const current = _taskList.find((item) => item.id == id)
+    if (current) {
+      current.isFinished = finish
+    }
+    const newTaskList = _taskList.sort((a, b) => b.isFinished - a.isFinished)
+    setTaskList(newTaskList)
   }
 
   const handleChange = (id: string, value: string) => {
@@ -70,6 +82,7 @@ function Today(props: Props) {
       return (
         <ToDoItem
           className={styles['todo-item']}
+          onFinishChange={(finish: string) => handleFinish(item.id, finish)}
           onChange={(value: string) => handleChange(item.id, value)}
           key={item.id}
           suffix={

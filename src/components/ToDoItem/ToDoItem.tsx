@@ -16,6 +16,7 @@ interface Props {
   todoValue?: string
   className?: string
   onChange?: (value: string) => void
+  onFinishChange?: (finish: boolean) => void
   suffix?: ReactNode
 }
 
@@ -36,6 +37,13 @@ function TodoItem(props: Props) {
     setValue(value)
     props.onChange?.(value)
   }
+  const handleTick = () => {
+    setDisabled((disabled) => {
+      const newDisabled = !disabled
+      props.onFinishChange?.(newDisabled)
+      return newDisabled
+    })
+  }
 
   useEffect(() => {
     if (preTodoValue.current !== todoValue) {
@@ -50,7 +58,7 @@ function TodoItem(props: Props) {
         <Checkbox
           className={styles.checkbox}
           checked={disabled}
-          onChange={() => setDisabled(!disabled)}
+          onChange={handleTick}
         />
         <ContentEditable
           {...props}

@@ -31,7 +31,7 @@ const ContentEditable: FC<Props> = (props) => {
     placeholder = '',
     suffix = '',
   } = props
-  console.log('🥳🥳🥳 ~~ props--->>>', props)
+  // console.log('🥳🥳🥳 ~~ props--->>>', props)
   const textRef = useRef<HTMLDivElement | null>(null)
 
   const classNames = classnames([
