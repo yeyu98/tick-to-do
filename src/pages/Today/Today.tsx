@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-20 16:29:57
+ * @LastEditTime: 2024-09-20 17:18:11
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -116,7 +116,7 @@ function Today(props: Props) {
   useEffect(() => {
     localforage.getItem(KEY).then((list) => {
       console.log('🥳🥳🥳 ~~ useEffect ~~ list--->>>', list)
-      setTaskList([...list])
+      setTaskList(list)
     })
   }, [])
 

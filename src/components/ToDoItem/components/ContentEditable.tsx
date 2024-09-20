@@ -2,11 +2,11 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-20 17:17:11
+ * @LastEditTime: 2024-09-20 17:40:40
  * @FilePath: \tick-to-do\src\components\ToDoItem\components\ContentEditable.tsx
  * @Description:
  */
-import { useRef, useEffect, ReactNode, FC } from 'react'
+import { useRef, useEffect, ReactNode, FC, useState } from 'react'
 import type { KeyboardEvent, FocusEvent, FormEvent } from 'react'
 import classnames from 'classnames'
 import styles from './ContentEditable.module.less'
@@ -33,6 +33,8 @@ const ContentEditable: FC<Props> = (props) => {
   } = props
   // console.log('🥳🥳🥳 ~~ props--->>>', props)
   const textRef = useRef<HTMLDivElement | null>(null)
+  const isCompositionEnd = useRef(true)
+  const [isFocused, setIsFocused] = useState(false)
 
   const classNames = classnames([
     styles.container,
@@ -40,11 +42,21 @@ const ContentEditable: FC<Props> = (props) => {
     className,
   ])
 
+  const handleCompositionStart = () => {
+    isCompositionEnd.current = false
+  }
+
+  const handleCompositionEnd = () => {
+    isCompositionEnd.current = true
+  }
+
   const handleBlur = (e: FocusEvent<HTMLDivElement>) => {
+    setIsFocused(false)
     props?.onBlur?.(e.target.innerHTML)
   }
 
   const handleFocus = (e: FocusEvent<HTMLDivElement>) => {
+    setIsFocused(true)
     props?.onFocus?.(e)
   }
 
@@ -53,7 +65,9 @@ const ContentEditable: FC<Props> = (props) => {
   }
 
   const handleChange = (e: FormEvent<HTMLDivElement>) => {
-    props?.onChange?.(e.target.innerHTML)
+    if (isCompositionEnd.current) {
+      props?.onChange?.(e.target.innerHTML)
+    }
   }
 
   function replaceCaret(el: HTMLElement) {
@@ -74,7 +88,6 @@ const ContentEditable: FC<Props> = (props) => {
       if (el instanceof HTMLElement) el.focus()
     }
   }
-
   useEffect(() => {
     if (value && textRef.current) {
       textRef.current.innerHTML = value
@@ -89,13 +102,15 @@ const ContentEditable: FC<Props> = (props) => {
           <div
             ref={textRef}
             className={styles.contentEditable}
+            onCompositionStart={handleCompositionStart}
+            onCompositionEnd={handleCompositionEnd}
             onBlur={handleBlur}
             onFocus={handleFocus}
             onInput={handleChange}
             onKeyDown={handleKeyDown}
             contentEditable={!disabled}
           ></div>
-          {placeholder && !value && (
+          {placeholder && !value && !isFocused && (
             <span className={styles.placeholder}>{placeholder}</span>
           )}
         </div>

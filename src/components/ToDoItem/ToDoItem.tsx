@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-20 16:32:12
+ * @LastEditTime: 2024-09-20 17:27:37
  * @FilePath: \tick-to-do\src\components\ToDoItem\ToDoItem.tsx
  * @Description:
  */
@@ -36,6 +36,7 @@ function TodoItem(props: Props) {
     props.onFocus?.(e)
   }
   const handleChange = (value: string) => {
+    console.log('🥳🥳🥳 ~~ handleChange ~~ value--->>>', value)
     setValue(value)
     props.onChange?.(value)
   }
