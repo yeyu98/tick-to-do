@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-14 10:46:35
+ * @LastEditTime: 2024-09-20 17:17:11
  * @FilePath: \tick-to-do\src\components\ToDoItem\components\ContentEditable.tsx
  * @Description:
  */
@@ -56,12 +56,31 @@ const ContentEditable: FC<Props> = (props) => {
     props?.onChange?.(e.target.innerHTML)
   }
 
+  function replaceCaret(el: HTMLElement) {
+    // Place the caret at the end of the element
+    const target = document.createTextNode('')
+    el.appendChild(target)
+    // do not move caret if element was not focused
+    const isTargetFocused = document.activeElement === el
+    if (target !== null && target.nodeValue !== null && isTargetFocused) {
+      const sel = window.getSelection()
+      if (sel !== null) {
+        const range = document.createRange()
+        range.setStart(target, target.nodeValue.length)
+        range.collapse(true)
+        sel.removeAllRanges()
+        sel.addRange(range)
+      }
+      if (el instanceof HTMLElement) el.focus()
+    }
+  }
+
   useEffect(() => {
     if (value && textRef.current) {
       textRef.current.innerHTML = value
+      replaceCaret(textRef.current)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [value])
 
   return (
     <>

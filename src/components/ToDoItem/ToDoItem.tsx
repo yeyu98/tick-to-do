@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-14 10:46:21
+ * @LastEditTime: 2024-09-20 16:32:12
  * @FilePath: \tick-to-do\src\components\ToDoItem\ToDoItem.tsx
  * @Description:
  */
@@ -15,6 +15,8 @@ import styles from './ToDoItem.module.less'
 interface Props {
   todoValue?: string
   className?: string
+  onBlur?: (value: string) => void
+  onFocus?: (e: any) => void
   onChange?: (value: string) => void
   onFinishChange?: (finish: boolean) => void
   suffix?: ReactNode
@@ -24,14 +26,14 @@ function TodoItem(props: Props) {
   const { className = '', todoValue = '' } = props
   const [disabled, setDisabled] = useState(false)
   const [value, setValue] = useState('')
-  const preTodoValue = useRef(todoValue)
+  const preTodoValue = useRef('')
   const classNames = classnames([styles['todo-item'], className])
   const handleBlur = (value: string) => {
-    console.log('🥳🥳🥳 ~~ handleBlur ~~ value--->>>', value)
+    props.onBlur?.(value)
   }
 
   const handleFocus = (e: any) => {
-    console.log('👀👀👀 ~~ handleFocus ~~ e--->>>', e)
+    props.onFocus?.(e)
   }
   const handleChange = (value: string) => {
     setValue(value)

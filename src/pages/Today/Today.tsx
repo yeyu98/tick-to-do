@@ -2,16 +2,17 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-14 17:09:35
+ * @LastEditTime: 2024-09-20 16:29:57
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import EmptyData from './components/EmptyData'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import dayjs, { getWeek } from '@/utils/dayjs'
 import ToDoItem from '@/components/ToDoItem/ToDoItem'
 import { nanoid } from 'nanoid'
+import localforage from 'localforage'
 import styles from './Today.module.less'
 
 interface Props {}
@@ -22,6 +23,8 @@ interface Task {
   taskContent: string
   isFinished: boolean
 }
+
+const KEY = 'tick-to-do'
 
 function Today(props: Props) {
   const defaultList = [
@@ -85,6 +88,16 @@ function Today(props: Props) {
     setTaskList(newTaskList)
   }
 
+  const handleBlur = (id: string, value: string) => {
+    const _taskList = [...taskList]
+    const current = _taskList.find((item) => item.id == id)
+    if (current) {
+      current.taskContent = value
+      setTaskList(_taskList)
+      localforage.setItem(KEY, _taskList)
+    }
+  }
+
   const handleChange = (id: string, value: string) => {
     let isExits = false
     const _taskList = [...taskList]
@@ -100,13 +113,22 @@ function Today(props: Props) {
     }
   }
 
+  useEffect(() => {
+    localforage.getItem(KEY).then((list) => {
+      console.log('🥳🥳🥳 ~~ useEffect ~~ list--->>>', list)
+      setTaskList([...list])
+    })
+  }, [])
+
   const renderTaskList = () => {
     return taskList.map((item) => {
       return (
         <ToDoItem
           className={styles['todo-item']}
+          todoValue={item.taskContent}
           onFinishChange={(finish: boolean) => handleFinish(item.id, finish)}
           onChange={(value: string) => handleChange(item.id, value)}
+          onBlur={(value: string) => handleBlur(item.id, value)}
           key={item.id}
           suffix={
             <DeleteOutlined
