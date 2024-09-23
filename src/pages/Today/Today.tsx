@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-23 09:25:46
+ * @LastEditTime: 2024-09-23 10:10:49
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -57,6 +57,15 @@ function Today(props: Props) {
 
   const title = formatDate()
 
+  const getTaskById = (id: string) => {
+    const _taskList = [...taskList]
+    const task = _taskList.find((item) => item.id == id)
+    return {
+      task,
+      _taskList,
+    }
+  }
+
   const addItem = () => {
     const id = nanoid(8)
     const currentTask = {
@@ -76,8 +85,7 @@ function Today(props: Props) {
   }
 
   const handleFinish = (id: string, finish: boolean) => {
-    const _taskList = [...taskList]
-    const current = _taskList.find((item) => item.id == id)
+    const { _taskList, task: current } = getTaskById(id)
     if (current) {
       current.isFinished = finish
     }
@@ -85,12 +93,12 @@ function Today(props: Props) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (a, b) => (b.isFinished as any) - (a.isFinished as any),
     )
+    console.log('🥳🥳🥳 ~~ handleFinish ~~ newTaskList--->>>', newTaskList)
     setTaskList(newTaskList)
   }
 
   const handleBlur = (id: string, value: string) => {
-    const _taskList = [...taskList]
-    const current = _taskList.find((item) => item.id == id)
+    const { task: current, _taskList } = getTaskById(id)
     if (current) {
       current.taskContent = value
       setTaskList(_taskList)
@@ -99,16 +107,10 @@ function Today(props: Props) {
   }
 
   const handleChange = (id: string, value: string) => {
-    let isExits = false
-    const _taskList = [...taskList]
-    _taskList.forEach((task) => {
-      if (task.id === id) {
-        task.taskContent = value
-        task.timestamp = Date.now()
-        isExits = true
-      }
-    })
-    if (isExits) {
+    const { task: current, _taskList } = getTaskById(id)
+    if (current) {
+      current.taskContent = value
+      current.timestamp = Date.now()
       setTaskList(_taskList)
     }
   }
