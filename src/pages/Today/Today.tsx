@@ -2,14 +2,14 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-20 17:18:11
+ * @LastEditTime: 2024-09-23 09:25:46
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
 import { useState, useEffect } from 'react'
 import EmptyData from './components/EmptyData'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
-import dayjs, { getWeek } from '@/utils/dayjs'
+import dayjs, { getWeek, isToday } from '@/utils/dayjs'
 import ToDoItem from '@/components/ToDoItem/ToDoItem'
 import { nanoid } from 'nanoid'
 import localforage from 'localforage'
@@ -114,9 +114,9 @@ function Today(props: Props) {
   }
 
   useEffect(() => {
-    localforage.getItem(KEY).then((list) => {
-      console.log('🥳🥳🥳 ~~ useEffect ~~ list--->>>', list)
-      setTaskList(list)
+    localforage.getItem<Task[]>(KEY).then((list) => {
+      const todayList = list?.filter((item) => isToday(item.timestamp)) || []
+      setTaskList(todayList)
     })
   }, [])
 
