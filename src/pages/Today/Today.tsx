@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-23 10:14:53
+ * @LastEditTime: 2024-09-24 15:27:49
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -12,41 +12,11 @@ import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import dayjs, { getWeek, isToday } from '@/utils/dayjs'
 import ToDoItem from '@/components/ToDoItem/ToDoItem'
 import { nanoid } from 'nanoid'
-import localforage from 'localforage'
+import { getTaskLocal, setTaskLocal } from '@/utils/localData'
+import type { Task } from '@/utils/localData'
 import styles from './Today.module.less'
 
-interface Props {}
-
-interface Task {
-  id: string
-  timestamp: number
-  taskContent: string
-  isFinished: boolean
-}
-
-const KEY = 'tick-to-do'
-
-function Today(props: Props) {
-  const defaultList = [
-    {
-      id: 1,
-      timestamp: Date.now(),
-      taskContent: '123',
-      isFinished: false,
-    },
-    {
-      id: 2,
-      timestamp: Date.now(),
-      taskContent: '456',
-      isFinished: false,
-    },
-    {
-      id: 3,
-      timestamp: Date.now(),
-      taskContent: '789',
-      isFinished: false,
-    },
-  ]
+function Today() {
   const [taskList, setTaskList] = useState<Task[]>([])
   const formatDate = () => {
     const timestamp = Date.now()
@@ -102,7 +72,7 @@ function Today(props: Props) {
     if (current) {
       current.taskContent = value
       setTaskList(_taskList)
-      localforage.setItem(KEY, _taskList)
+      setTaskLocal(current)
     }
   }
 
@@ -116,7 +86,7 @@ function Today(props: Props) {
   }
 
   useEffect(() => {
-    localforage.getItem<Task[]>(KEY).then((list) => {
+    getTaskLocal().then((list) => {
       const todayList = list?.filter((item) => isToday(item.timestamp)) || []
       setTaskList(todayList)
     })
