@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-24 14:59:15
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-24 15:34:58
+ * @LastEditTime: 2024-09-24 20:59:30
  * @FilePath: \tick-to-do\src\utils\localData.ts
  * @Description:
  */
@@ -46,7 +46,12 @@ export const setTaskLocal = async (value: Task, key: string = KEY) => {
         }
       })
     }
-    isChange && localforage.setItem(key, taskList)
+    if (isChange) {
+      localforage.setItem(key, taskList)
+    } else {
+      taskList.push(value)
+      localforage.setItem(key, taskList)
+    }
   } else {
     localforage.setItem(key, taskList)
   }

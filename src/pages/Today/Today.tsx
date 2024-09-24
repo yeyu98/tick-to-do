@@ -2,13 +2,15 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-24 15:27:49
+ * @LastEditTime: 2024-09-24 21:17:15
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
 import { useState, useEffect } from 'react'
 import EmptyData from './components/EmptyData'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
+import DragIcon from '@/assets/images/drag.svg'
 import dayjs, { getWeek, isToday } from '@/utils/dayjs'
 import ToDoItem from '@/components/ToDoItem/ToDoItem'
 import { nanoid } from 'nanoid'
@@ -26,6 +28,16 @@ function Today() {
   }
 
   const title = formatDate()
+
+  const handleDragStart = () => {
+    console.log('drag start')
+  }
+  const handleDragUpdate = () => {
+    console.log('drag update')
+  }
+  const handleDragEnd = () => {
+    console.log('drag end')
+  }
 
   const getTaskById = (id: string) => {
     const _taskList = [...taskList]
@@ -93,22 +105,32 @@ function Today() {
   }, [])
 
   const renderTaskList = () => {
-    return taskList.map((item) => {
+    return taskList.map((item, index) => {
       return (
-        <ToDoItem
-          className={styles['todo-item']}
-          todoValue={item.taskContent}
-          onFinishChange={(finish: boolean) => handleFinish(item.id, finish)}
-          onChange={(value: string) => handleChange(item.id, value)}
-          onBlur={(value: string) => handleBlur(item.id, value)}
-          key={item.id}
-          suffix={
-            <DeleteOutlined
-              className={styles['delete-icon']}
-              onClick={() => deleteItem(item.id)}
+        <Draggable draggableId={item.id} index={index} key={item.id}>
+          {(provided, snapshot) => (
+            <ToDoItem
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              className={styles['todo-item']}
+              todoValue={item.taskContent}
+              onFinishChange={(finish: boolean) =>
+                handleFinish(item.id, finish)
+              }
+              onChange={(value: string) => handleChange(item.id, value)}
+              onBlur={(value: string) => handleBlur(item.id, value)}
+              key={item.id}
+              prefix={<img className={styles['drag-icon']} src={DragIcon} />}
+              suffix={
+                <DeleteOutlined
+                  className={styles['delete-icon']}
+                  onClick={() => deleteItem(item.id)}
+                />
+              }
             />
-          }
-        />
+          )}
+        </Draggable>
       )
     })
   }
@@ -117,7 +139,19 @@ function Today() {
     <>
       <h4>{title}</h4>
       <div className={styles['today-container']}>
-        {taskList?.length > 0 && renderTaskList()}
+        <DragDropContext
+          onDragStart={handleDragStart}
+          onDragUpdate={handleDragUpdate}
+          onDragEnd={handleDragEnd}
+        >
+          <Droppable droppableId="droppable">
+            {(provided, snapshot) => (
+              <div {...provided.droppableProps} ref={provided.innerRef}>
+                {taskList?.length > 0 && renderTaskList()}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
         <div className={styles['add-item']} onClick={addItem}>
           <PlusOutlined className={styles['add-item-icon']} />
           <span className={styles['add-item-text']}>添加任务</span>

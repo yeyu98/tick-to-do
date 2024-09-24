@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-20 17:27:37
+ * @LastEditTime: 2024-09-24 21:22:26
  * @FilePath: \tick-to-do\src\components\ToDoItem\ToDoItem.tsx
  * @Description:
  */
@@ -19,11 +19,12 @@ interface Props {
   onFocus?: (e: any) => void
   onChange?: (value: string) => void
   onFinishChange?: (finish: boolean) => void
+  prefix?: ReactNode
   suffix?: ReactNode
 }
 
 function TodoItem(props: Props) {
-  const { className = '', todoValue = '' } = props
+  const { className = '', todoValue = '', prefix = '' } = props
   const [disabled, setDisabled] = useState(false)
   const [value, setValue] = useState('')
   const preTodoValue = useRef('')
@@ -58,6 +59,7 @@ function TodoItem(props: Props) {
   return (
     <>
       <div className={classNames}>
+        {prefix ? <>{prefix}</> : null}
         <Checkbox
           className={styles.checkbox}
           checked={disabled}
