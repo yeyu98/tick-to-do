@@ -21,6 +21,17 @@ export const getTaskLocal = <T = Task[]>(
   key: string = KEY,
 ): Promise<T | null> => localforage.getItem(key)
 
+export const deleteTaskLocal = async (id: string) => {
+  const _taskList = await getTaskLocal()
+  if (_taskList && _taskList?.length > 0) {
+    const currentIndex = _taskList.findIndex((item) => item.id == id)
+    if (currentIndex !== -1) {
+      _taskList.splice(currentIndex, 1)
+      localforage.setItem(KEY, _taskList)
+    }
+  }
+}
+
 export const setTaskLocal = async (value: Task, key: string = KEY) => {
   const taskList = await getTaskLocal(key)
   let isChange = false

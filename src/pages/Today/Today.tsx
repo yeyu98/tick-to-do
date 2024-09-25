@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-25 16:38:18
+ * @LastEditTime: 2024-09-25 16:57:39
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -14,7 +14,7 @@ import DragIcon from '@/assets/images/drag.svg'
 import dayjs, { getWeek, isToday, getCurrentWeekScope } from '@/utils/dayjs'
 import ToDoItem from '@/components/ToDoItem/ToDoItem'
 import { nanoid } from 'nanoid'
-import { getTaskLocal, setTaskLocal } from '@/utils/localData'
+import { getTaskLocal, setTaskLocal, deleteTaskLocal } from '@/utils/localData'
 import type { Task } from '@/utils/localData'
 import styles from './Today.module.less'
 
@@ -65,6 +65,7 @@ function Today() {
     const currentIndex = taskList.findIndex((item) => item.id == id)
     _taskList.splice(currentIndex, 1)
     setTaskList(_taskList)
+    deleteTaskLocal(id)
   }
 
   const handleFinish = (id: string, finish: boolean) => {
