@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-25 16:57:39
+ * @LastEditTime: 2024-09-25 17:59:50
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -110,12 +110,15 @@ function Today() {
   const renderTaskList = () => {
     return taskList.map((item, index) => {
       return (
-        <Draggable draggableId={item.id} index={index} key={item.id}>
+        <Draggable
+          draggableId={`drag-${item.id}`}
+          index={index}
+          key={item.id}
+          isDragDisabled
+        >
           {(provided, snapshot) => (
             <ToDoItem
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
+              innerRef={provided.innerRef}
               className={styles['todo-item']}
               todoValue={item.taskContent}
               onFinishChange={(finish: boolean) =>
@@ -132,6 +135,8 @@ function Today() {
                   onClick={() => deleteItem(item.id)}
                 />
               }
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
             />
           )}
         </Draggable>
@@ -150,7 +155,7 @@ function Today() {
         >
           <Droppable droppableId="droppable">
             {(provided, snapshot) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
+              <div ref={provided.innerRef} {...provided.droppableProps}>
                 {taskList?.length > 0 && renderTaskList()}
               </div>
             )}

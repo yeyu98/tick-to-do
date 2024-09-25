@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-24 21:22:26
+ * @LastEditTime: 2024-09-25 17:20:54
  * @FilePath: \tick-to-do\src\components\ToDoItem\ToDoItem.tsx
  * @Description:
  */
@@ -13,6 +13,7 @@ import classnames from 'classnames'
 import styles from './ToDoItem.module.less'
 
 interface Props {
+  innerRef?: any
   isFinished?: boolean
   todoValue?: string
   className?: string
@@ -24,12 +25,16 @@ interface Props {
   suffix?: ReactNode
 }
 
-function TodoItem(props: Props) {
+// function TodoItem(props: Props) {
+
+// }
+const TodoItem: React.FC<Props> = (props: Props) => {
   const {
     className = '',
     todoValue = '',
     prefix = '',
     isFinished = false,
+    innerRef = '',
   } = props
   const [disabled, setDisabled] = useState(false)
   const [value, setValue] = useState('')
@@ -68,7 +73,7 @@ function TodoItem(props: Props) {
 
   return (
     <>
-      <div className={classNames}>
+      <div className={classNames} ref={innerRef}>
         {prefix ? <>{prefix}</> : null}
         <Checkbox
           className={styles.checkbox}
