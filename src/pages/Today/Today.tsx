@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-25 16:04:56
+ * @LastEditTime: 2024-09-25 16:38:18
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -25,8 +25,6 @@ function Today() {
     const timestamp = Date.now()
     const week = getWeek(timestamp)
     const date = dayjs().format('MM月DD日')
-    const weekScope = getCurrentWeekScope()
-    console.log()
     return `${date}·今天·${week}`
   }, [])
 
@@ -73,13 +71,14 @@ function Today() {
     const { _taskList, task: current } = getTaskById(id)
     if (current) {
       current.isFinished = finish
+      const newTaskList = _taskList.sort(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (a, b) => (b.isFinished as any) - (a.isFinished as any),
+      )
+      console.log('🥳🥳🥳 ~~ handleFinish ~~ newTaskList--->>>', newTaskList)
+      setTaskList(newTaskList)
+      setTaskLocal(current)
     }
-    const newTaskList = _taskList.sort(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (a, b) => (b.isFinished as any) - (a.isFinished as any),
-    )
-    console.log('🥳🥳🥳 ~~ handleFinish ~~ newTaskList--->>>', newTaskList)
-    setTaskList(newTaskList)
   }
 
   const handleBlur = (id: string, value: string) => {
@@ -121,6 +120,7 @@ function Today() {
               onFinishChange={(finish: boolean) =>
                 handleFinish(item.id, finish)
               }
+              isFinished={item.isFinished}
               onChange={(value: string) => handleChange(item.id, value)}
               onBlur={(value: string) => handleBlur(item.id, value)}
               key={item.id}

@@ -13,6 +13,7 @@ import classnames from 'classnames'
 import styles from './ToDoItem.module.less'
 
 interface Props {
+  isFinished?: boolean
   todoValue?: string
   className?: string
   onBlur?: (value: string) => void
@@ -24,7 +25,12 @@ interface Props {
 }
 
 function TodoItem(props: Props) {
-  const { className = '', todoValue = '', prefix = '' } = props
+  const {
+    className = '',
+    todoValue = '',
+    prefix = '',
+    isFinished = false,
+  } = props
   const [disabled, setDisabled] = useState(false)
   const [value, setValue] = useState('')
   const preTodoValue = useRef('')
@@ -48,6 +54,10 @@ function TodoItem(props: Props) {
       return newDisabled
     })
   }
+
+  useEffect(() => {
+    setDisabled(isFinished)
+  }, [isFinished])
 
   useEffect(() => {
     if (preTodoValue.current !== todoValue) {
