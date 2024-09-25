@@ -2,16 +2,16 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-24 21:17:15
+ * @LastEditTime: 2024-09-25 16:04:56
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import EmptyData from './components/EmptyData'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import DragIcon from '@/assets/images/drag.svg'
-import dayjs, { getWeek, isToday } from '@/utils/dayjs'
+import dayjs, { getWeek, isToday, getCurrentWeekScope } from '@/utils/dayjs'
 import ToDoItem from '@/components/ToDoItem/ToDoItem'
 import { nanoid } from 'nanoid'
 import { getTaskLocal, setTaskLocal } from '@/utils/localData'
@@ -20,12 +20,15 @@ import styles from './Today.module.less'
 
 function Today() {
   const [taskList, setTaskList] = useState<Task[]>([])
-  const formatDate = () => {
+
+  const formatDate = useCallback(() => {
     const timestamp = Date.now()
     const week = getWeek(timestamp)
     const date = dayjs().format('MM月DD日')
+    const weekScope = getCurrentWeekScope()
+    console.log()
     return `${date}·今天·${week}`
-  }
+  }, [])
 
   const title = formatDate()
 
