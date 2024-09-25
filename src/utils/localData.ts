@@ -53,6 +53,6 @@ export const setTaskLocal = async (value: Task, key: string = KEY) => {
       localforage.setItem(key, taskList)
     }
   } else {
-    localforage.setItem(key, taskList)
+    localforage.setItem(key, [value])
   }
 }
