@@ -2,13 +2,14 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-25 17:59:50
+ * @LastEditTime: 2024-09-26 10:02:10
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
 import { useState, useEffect, useCallback } from 'react'
 import EmptyData from './components/EmptyData'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import type { DropResult, ResponderProvided } from 'react-beautiful-dnd'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import DragIcon from '@/assets/images/drag.svg'
 import dayjs, { getWeek, isToday, getCurrentWeekScope } from '@/utils/dayjs'
@@ -30,14 +31,15 @@ function Today() {
 
   const title = formatDate()
 
-  const handleDragStart = () => {
-    console.log('drag start')
-  }
-  const handleDragUpdate = () => {
-    console.log('drag update')
-  }
-  const handleDragEnd = () => {
-    console.log('drag end')
+  const handleDragEnd = (result: DropResult, provided: ResponderProvided) => {
+    console.log('drag end', result, provided)
+    const { source, destination } = result
+    const _taskList = [...taskList]
+    if (destination) {
+      const sourceTask = _taskList.splice(source.index, 1)
+      _taskList.splice(destination.index, 0, sourceTask[0])
+      setTaskList(_taskList)
+    }
   }
 
   const getTaskById = (id: string) => {
@@ -110,35 +112,32 @@ function Today() {
   const renderTaskList = () => {
     return taskList.map((item, index) => {
       return (
-        <Draggable
-          draggableId={`drag-${item.id}`}
-          index={index}
-          key={item.id}
-          isDragDisabled
-        >
-          {(provided, snapshot) => (
-            <ToDoItem
-              innerRef={provided.innerRef}
-              className={styles['todo-item']}
-              todoValue={item.taskContent}
-              onFinishChange={(finish: boolean) =>
-                handleFinish(item.id, finish)
-              }
-              isFinished={item.isFinished}
-              onChange={(value: string) => handleChange(item.id, value)}
-              onBlur={(value: string) => handleBlur(item.id, value)}
-              key={item.id}
-              prefix={<img className={styles['drag-icon']} src={DragIcon} />}
-              suffix={
-                <DeleteOutlined
-                  className={styles['delete-icon']}
-                  onClick={() => deleteItem(item.id)}
-                />
-              }
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-            />
-          )}
+        <Draggable draggableId={`drag-${item.id}`} index={index} key={item.id}>
+          {(provided, snapshot) => {
+            return (
+              <ToDoItem
+                innerRef={provided.innerRef}
+                className={styles['todo-item']}
+                todoValue={item.taskContent}
+                onFinishChange={(finish: boolean) =>
+                  handleFinish(item.id, finish)
+                }
+                isFinished={item.isFinished}
+                onChange={(value: string) => handleChange(item.id, value)}
+                onBlur={(value: string) => handleBlur(item.id, value)}
+                key={item.id}
+                prefix={<img className={styles['drag-icon']} src={DragIcon} />}
+                suffix={
+                  <DeleteOutlined
+                    className={styles['delete-icon']}
+                    onClick={() => deleteItem(item.id)}
+                  />
+                }
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+              />
+            )
+          }}
         </Draggable>
       )
     })
@@ -148,17 +147,20 @@ function Today() {
     <>
       <h4>{title}</h4>
       <div className={styles['today-container']}>
-        <DragDropContext
-          onDragStart={handleDragStart}
-          onDragUpdate={handleDragUpdate}
-          onDragEnd={handleDragEnd}
-        >
+        <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="droppable">
-            {(provided, snapshot) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                {taskList?.length > 0 && renderTaskList()}
-              </div>
-            )}
+            {(provided, snapshot) => {
+              console.log(provided, ':provided', snapshot)
+              return (
+                <div ref={provided.innerRef} {...provided.droppableProps}>
+                  <div>{taskList?.length > 0 && renderTaskList()}</div>
+                  {/* TODO 暂时放置空占位，后续可以考虑copy一份占位 */}
+                  {snapshot.isUsingPlaceholder ? (
+                    <div>{provided.placeholder}</div>
+                  ) : null}
+                </div>
+              )
+            }}
           </Droppable>
         </DragDropContext>
         <div className={styles['add-item']} onClick={addItem}>

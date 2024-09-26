@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-25 17:20:54
+ * @LastEditTime: 2024-09-26 09:15:53
  * @FilePath: \tick-to-do\src\components\ToDoItem\ToDoItem.tsx
  * @Description:
  */
@@ -35,27 +35,32 @@ const TodoItem: React.FC<Props> = (props: Props) => {
     prefix = '',
     isFinished = false,
     innerRef = '',
+    onBlur = null,
+    onFocus = null,
+    onChange = null,
+    onFinishChange = null,
+    ...restProps
   } = props
   const [disabled, setDisabled] = useState(false)
   const [value, setValue] = useState('')
   const preTodoValue = useRef('')
   const classNames = classnames([styles['todo-item'], className])
   const handleBlur = (value: string) => {
-    props.onBlur?.(value)
+    onBlur?.(value)
   }
 
   const handleFocus = (e: any) => {
-    props.onFocus?.(e)
+    onFocus?.(e)
   }
   const handleChange = (value: string) => {
     console.log('🥳🥳🥳 ~~ handleChange ~~ value--->>>', value)
     setValue(value)
-    props.onChange?.(value)
+    onChange?.(value)
   }
   const handleTick = () => {
     setDisabled((disabled) => {
       const newDisabled = !disabled
-      props.onFinishChange?.(newDisabled)
+      onFinishChange?.(newDisabled)
       return newDisabled
     })
   }
@@ -73,7 +78,7 @@ const TodoItem: React.FC<Props> = (props: Props) => {
 
   return (
     <>
-      <div className={classNames} ref={innerRef}>
+      <div className={classNames} ref={innerRef} {...restProps}>
         {prefix ? <>{prefix}</> : null}
         <Checkbox
           className={styles.checkbox}
