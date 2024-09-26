@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-26 10:07:59
+ * @LastEditTime: 2024-09-26 10:17:13
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -86,8 +86,8 @@ function Today() {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (a, b) => (b.isFinished as any) - (a.isFinished as any),
       )
-      console.log('🥳🥳🥳 ~~ handleFinish ~~ newTaskList--->>>', newTaskList)
       setTaskList(newTaskList)
+      // NOTE 排序
       setTaskLocal(current)
     }
   }
