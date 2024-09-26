@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-26 10:02:10
+ * @LastEditTime: 2024-09-26 10:07:59
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -12,10 +12,15 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import type { DropResult, ResponderProvided } from 'react-beautiful-dnd'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import DragIcon from '@/assets/images/drag.svg'
-import dayjs, { getWeek, isToday, getCurrentWeekScope } from '@/utils/dayjs'
+import dayjs, { getWeek, isToday } from '@/utils/dayjs'
 import ToDoItem from '@/components/ToDoItem/ToDoItem'
 import { nanoid } from 'nanoid'
-import { getTaskLocal, setTaskLocal, deleteTaskLocal } from '@/utils/localData'
+import {
+  getTaskLocal,
+  setTaskLocal,
+  deleteTaskLocal,
+  swapTaskLocal,
+} from '@/utils/localData'
 import type { Task } from '@/utils/localData'
 import styles from './Today.module.less'
 
@@ -36,8 +41,11 @@ function Today() {
     const { source, destination } = result
     const _taskList = [...taskList]
     if (destination) {
-      const sourceTask = _taskList.splice(source.index, 1)
-      _taskList.splice(destination.index, 0, sourceTask[0])
+      const sourceTask = _taskList[source.index]
+      const destinationTask = _taskList[destination.index]
+      _taskList.splice(source.index, 1)
+      _taskList.splice(destination.index, 0, sourceTask)
+      swapTaskLocal(sourceTask, destinationTask)
       setTaskList(_taskList)
     }
   }
@@ -113,7 +121,7 @@ function Today() {
     return taskList.map((item, index) => {
       return (
         <Draggable draggableId={`drag-${item.id}`} index={index} key={item.id}>
-          {(provided, snapshot) => {
+          {(provided) => {
             return (
               <ToDoItem
                 innerRef={provided.innerRef}

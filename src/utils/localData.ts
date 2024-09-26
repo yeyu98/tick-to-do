@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-24 14:59:15
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-25 16:41:32
+ * @LastEditTime: 2024-09-26 10:15:32
  * @FilePath: \tick-to-do\src\utils\localData.ts
  * @Description:
  */
@@ -27,6 +27,21 @@ export const deleteTaskLocal = async (id: string) => {
     const currentIndex = _taskList.findIndex((item) => item.id == id)
     if (currentIndex !== -1) {
       _taskList.splice(currentIndex, 1)
+      localforage.setItem(KEY, _taskList)
+    }
+  }
+}
+
+export const swapTaskLocal = async (source: Task, destination: Task) => {
+  const _taskList = await getTaskLocal()
+  if (_taskList && _taskList?.length > 0) {
+    const sourceIndex = _taskList.findIndex((item) => item.id == source.id)
+    const destinationIndex = _taskList.findIndex(
+      (item) => item.id == destination.id,
+    )
+    if (sourceIndex !== -1 && destinationIndex !== -1) {
+      _taskList.splice(sourceIndex, 1)
+      _taskList.splice(destinationIndex, 0, source)
       localforage.setItem(KEY, _taskList)
     }
   }
