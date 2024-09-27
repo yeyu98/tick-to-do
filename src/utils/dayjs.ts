@@ -40,8 +40,11 @@ export const getCurrentWeekScope = (
   }
 }
 
-export const isCurrentWeek = (date?: number | string) => {
-  const weekScope = getCurrentWeekScope()
+export const isCurrentWeek = (
+  date?: number | string,
+  targetDate?: number | string,
+) => {
+  const weekScope = getCurrentWeekScope(targetDate)
   return dayjs(date).isBetween(weekScope.start, weekScope.end)
 }
 
