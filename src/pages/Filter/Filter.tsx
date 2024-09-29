@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 17:06:38
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-29 15:01:45
+ * @LastEditTime: 2024-09-29 17:59:35
  * @FilePath: \tick-to-do\src\pages\Filter\Filter.tsx
  * @Description:
  */
@@ -12,13 +12,16 @@ import type { MenuProps } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 import { getTaskLocal } from '@/utils/localData'
 import type { Task } from '@/utils/localData'
-import dayjs, { isCurrentWeek } from '@/utils/dayjs'
+import dayjs from '@/utils/dayjs'
+import type { Dayjs } from 'dayjs'
 import styles from './Filter.module.less'
 
 interface MenuInfo {
   label: string
   key: string
 }
+
+type RangeDate = [start: Dayjs, end: Dayjs]
 
 const { RangePicker } = DatePicker
 
@@ -45,12 +48,16 @@ const dropdownItems = [
   },
 ]
 
+const defaultRange: RangeDate = [dayjs(), dayjs()]
+
 const Filter = () => {
   const [taskList, setTaskList] = useState<Task[]>([])
   const [menuInfo, setMenuInfo] = useState<MenuInfo>({ ...dropdownItems[0] })
+  const [rangeValue, setRangeValue] = useState<RangeDate>([...defaultRange])
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     const currentMenuInfo = dropdownItems.find((item) => item.key == e.key)
+    getTaskByUnitType(currentMenuInfo!.key)
     setMenuInfo(currentMenuInfo!)
   }
 
@@ -59,27 +66,38 @@ const Filter = () => {
     onClick: handleMenuClick,
   }
 
-  const handleChange = async (dates, range) => {
-    console.log('🥳🥳🥳 ~~ handleChange ~~ dates--->>>', dates, range)
-    const start = dates[0].$d
-    const end = dates[1].$d
-    getFilteredTask(
-      (item: Task) => dayjs().isBetween(start, end) && item.isFinished,
-    )
+  const handleRangePickerChange = async (dates: any) => {
+    console.log('🥳🥳🥳 ~~ handleRangePickerChange ~~ dates--->>>', dates)
+    setRangeValue(dates)
+    const start = dates[0]
+    const end = dates[1]
+    // getFilteredTask(
+    //   (item: Task) => dayjs().isBetween(start, end) && item.isFinished,
+    // )
   }
 
-  const getFilteredTask = async (filterCallback: any) => {
+  const getFilteredTask = async ([start, end]: RangeDate) => {
+    console.log('🥳🥳🥳 ~~ getFilteredTask ~~ start--->>>', start, end)
     const localTaskList = await getTaskLocal()
     if (localTaskList && localTaskList?.length > 0) {
-      const filterTaskList = localTaskList?.filter(filterCallback)
+      const filterTaskList = localTaskList?.filter(
+        (item: Task) => dayjs().isBetween(start, end) && item.isFinished,
+      )
+      console.log('filterTaskList', filterTaskList)
       setTaskList(filterTaskList)
     }
   }
 
+  const getTaskByUnitType = (unitType: any = 'week') => {
+    console.log('🥳🥳🥳 ~~ getTaskByUnitType ~~ unitType--->>>', unitType)
+    const start = dayjs().startOf(unitType)
+    const end = dayjs().endOf(unitType)
+    getFilteredTask([start, end])
+  }
+
   useEffect(() => {
-    getFilteredTask(
-      (item: Task) => isCurrentWeek(item.timestamp) && item.isFinished,
-    )
+    getTaskByUnitType()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -94,7 +112,11 @@ const Filter = () => {
               </Space>
             </Button>
           </Dropdown>
-          <RangePicker picker={menuInfo.key} onChange={handleChange} />
+          <RangePicker
+            picker={menuInfo.key}
+            value={rangeValue}
+            onChange={handleRangePickerChange}
+          />
         </div>
         <Card title="本周" bordered={false} style={{ width: 300 }}>
           {taskList.map((task) => (

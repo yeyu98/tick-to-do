@@ -42,7 +42,9 @@ module.exports = {
     /** 关闭所有不必要或可能与Prettier冲突的规则 */
     'eslint-config-prettier',
   ],
-  rules: {},
+  rules: {
+    "@typescript-eslint/no-explicit-any": "off",
+  },
   ignorePatterns: ['dist', 'node_modules', '.eslintrc.cjs', 'eslint.config.js'],
   globals: {
     Edit: 'writable',
