@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 17:06:38
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-27 15:46:28
+ * @LastEditTime: 2024-09-29 15:01:45
  * @FilePath: \tick-to-do\src\pages\Filter\Filter.tsx
  * @Description:
  */
@@ -59,7 +59,8 @@ const Filter = () => {
     onClick: handleMenuClick,
   }
 
-  const handleChange = async (dates) => {
+  const handleChange = async (dates, range) => {
+    console.log('🥳🥳🥳 ~~ handleChange ~~ dates--->>>', dates, range)
     const start = dates[0].$d
     const end = dates[1].$d
     getFilteredTask(
@@ -84,7 +85,7 @@ const Filter = () => {
   return (
     <>
       <div className={styles['filter-container']}>
-        <div className="filter-wrapper">
+        <div className={styles['filter-wrapper']}>
           <Dropdown menu={menuProps}>
             <Button>
               <Space>

@@ -9,9 +9,10 @@
 import calendar from 'dayjs/plugin/calendar'
 import duration from 'dayjs/plugin/duration'
 import isBetween from 'dayjs/plugin/isBetween'
+import quarterOfYear from 'dayjs/plugin/quarterOfYear'
 import dayjs from 'dayjs'
 
-const plugins = [calendar, duration, isBetween]
+const plugins = [calendar, duration, isBetween, quarterOfYear]
 
 plugins.forEach((plugin) => dayjs.extend(plugin))
 
