@@ -2,17 +2,18 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 17:06:38
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-29 17:59:35
+ * @LastEditTime: 2024-10-09 17:15:56
  * @FilePath: \tick-to-do\src\pages\Filter\Filter.tsx
  * @Description:
  */
 import { useEffect, useState } from 'react'
-import { Dropdown, Card, Button, Space, DatePicker } from 'antd'
+import { Dropdown, Card, Button, Space, DatePicker, message } from 'antd'
 import type { MenuProps } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
+import { DownOutlined, CopyOutlined } from '@ant-design/icons'
 import { getTaskLocal } from '@/utils/localData'
 import type { Task } from '@/utils/localData'
 import dayjs from '@/utils/dayjs'
+import { copy } from '@/utils/index'
 import type { Dayjs } from 'dayjs'
 import styles from './Filter.module.less'
 
@@ -51,6 +52,8 @@ const dropdownItems = [
 const defaultRange: RangeDate = [dayjs(), dayjs()]
 
 const Filter = () => {
+  const [messageApi, contextHolder] = message.useMessage()
+
   const [taskList, setTaskList] = useState<Task[]>([])
   const [menuInfo, setMenuInfo] = useState<MenuInfo>({ ...dropdownItems[0] })
   const [rangeValue, setRangeValue] = useState<RangeDate>([...defaultRange])
@@ -74,6 +77,15 @@ const Filter = () => {
     // getFilteredTask(
     //   (item: Task) => dayjs().isBetween(start, end) && item.isFinished,
     // )
+  }
+  const handleCopy = async () => {
+    const text = taskList.reduce((prev, next) => {
+      return prev + next.taskContent + '\n'
+    }, '')
+    const success = await copy(text)
+    if (success) {
+      messageApi.success('复制成功')
+    }
   }
 
   const getFilteredTask = async ([start, end]: RangeDate) => {
@@ -102,6 +114,7 @@ const Filter = () => {
 
   return (
     <>
+      {contextHolder}
       <div className={styles['filter-container']}>
         <div className={styles['filter-wrapper']}>
           <Dropdown menu={menuProps}>
@@ -118,7 +131,17 @@ const Filter = () => {
             onChange={handleRangePickerChange}
           />
         </div>
-        <Card title="本周" bordered={false} style={{ width: 300 }}>
+        <Card
+          title="本周"
+          bordered={false}
+          style={{ width: 300 }}
+          extra={
+            <CopyOutlined
+              onClick={handleCopy}
+              className={styles['copy-icon']}
+            />
+          }
+        >
           {taskList.map((task) => (
             <div className={styles['task-item']} key={task.id}>
               {task.taskContent}
