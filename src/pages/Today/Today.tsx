@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-10-09 16:51:09
+ * @LastEditTime: 2024-10-09 16:57:58
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
@@ -133,31 +133,33 @@ function Today() {
     return taskList.map((item, index) => {
       return (
         <Draggable draggableId={`drag-${item.id}`} index={index} key={item.id}>
-          {(provided) => (
-            <ToDoItem
-              ref={(el) => (taskListRef.current[index] = el)}
-              innerRef={provided.innerRef}
-              className={styles['todo-item']}
-              todoValue={item.taskContent}
-              onFinishChange={(finish: boolean) =>
-                handleFinish(item.id, finish)
-              }
-              isFinished={item.isFinished}
-              onChange={(value: string) => handleChange(item.id, value)}
-              onBlur={(value: string) => handleBlur(item.id, value)}
-              onKeyDown={handleKeyDown}
-              key={item.id}
-              prefix={<img className={styles['drag-icon']} src={DragIcon} />}
-              suffix={
-                <DeleteOutlined
-                  className={styles['delete-icon']}
-                  onClick={() => deleteItem(item.id)}
-                />
-              }
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-            />
-          )}
+          {(provided) => {
+            return (
+              <ToDoItem
+                ref={(el) => (taskListRef.current[index] = el)}
+                innerRef={provided.innerRef}
+                className={styles['todo-item']}
+                todoValue={item.taskContent}
+                onFinishChange={(finish: boolean) =>
+                  handleFinish(item.id, finish)
+                }
+                isFinished={item.isFinished}
+                onChange={(value: string) => handleChange(item.id, value)}
+                onBlur={(value: string) => handleBlur(item.id, value)}
+                onKeyDown={handleKeyDown}
+                key={item.id}
+                prefix={<img className={styles['drag-icon']} src={DragIcon} />}
+                suffix={
+                  <DeleteOutlined
+                    className={styles['delete-icon']}
+                    onClick={() => deleteItem(item.id)}
+                  />
+                }
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+              />
+            )
+          }}
         </Draggable>
       )
     })
