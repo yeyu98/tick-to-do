@@ -2,11 +2,18 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 10:26:23
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-09-20 17:40:40
+ * @LastEditTime: 2024-10-09 16:41:10
  * @FilePath: \tick-to-do\src\components\ToDoItem\components\ContentEditable.tsx
  * @Description:
  */
-import { useRef, useEffect, ReactNode, FC, useState } from 'react'
+import {
+  useRef,
+  useEffect,
+  ReactNode,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from 'react'
 import type { KeyboardEvent, FocusEvent, FormEvent } from 'react'
 import classnames from 'classnames'
 import styles from './ContentEditable.module.less'
@@ -23,7 +30,7 @@ interface Props {
   className?: string
 }
 
-const ContentEditable: FC<Props> = (props) => {
+export default forwardRef(function ContentEditable(props: Props, ref) {
   const {
     value,
     disabled = false,
@@ -88,6 +95,14 @@ const ContentEditable: FC<Props> = (props) => {
       if (el instanceof HTMLElement) el.focus()
     }
   }
+
+  useImperativeHandle(ref, () => ({
+    setFocus: (isFocused: boolean) => {
+      textRef.current?.focus()
+      setIsFocused(isFocused)
+    },
+  }))
+
   useEffect(() => {
     if (value && textRef.current) {
       textRef.current.innerHTML = value
@@ -118,6 +133,4 @@ const ContentEditable: FC<Props> = (props) => {
       </div>
     </>
   )
-}
-
-export default ContentEditable
+})
