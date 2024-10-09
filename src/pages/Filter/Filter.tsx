@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 17:06:38
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-10-09 17:15:56
+ * @LastEditTime: 2024-10-09 17:17:27
  * @FilePath: \tick-to-do\src\pages\Filter\Filter.tsx
  * @Description:
  */
@@ -74,9 +74,7 @@ const Filter = () => {
     setRangeValue(dates)
     const start = dates[0]
     const end = dates[1]
-    // getFilteredTask(
-    //   (item: Task) => dayjs().isBetween(start, end) && item.isFinished,
-    // )
+    getFilteredTask([start, end])
   }
   const handleCopy = async () => {
     const text = taskList.reduce((prev, next) => {
@@ -89,7 +87,6 @@ const Filter = () => {
   }
 
   const getFilteredTask = async ([start, end]: RangeDate) => {
-    console.log('🥳🥳🥳 ~~ getFilteredTask ~~ start--->>>', start, end)
     const localTaskList = await getTaskLocal()
     if (localTaskList && localTaskList?.length > 0) {
       const filterTaskList = localTaskList?.filter(
