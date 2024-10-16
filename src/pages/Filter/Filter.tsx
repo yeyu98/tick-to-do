@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 17:06:38
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-10-09 17:17:27
+ * @LastEditTime: 2024-10-16 10:48:52
  * @FilePath: \tick-to-do\src\pages\Filter\Filter.tsx
  * @Description:
  */
@@ -70,10 +70,14 @@ const Filter = () => {
   }
 
   const handleRangePickerChange = async (dates: any) => {
-    console.log('🥳🥳🥳 ~~ handleRangePickerChange ~~ dates--->>>', dates)
     setRangeValue(dates)
     const start = dates[0]
     const end = dates[1]
+    console.log(
+      '🥳🥳🥳 ~~ handleRangePickerChange ~~ dates--->>>',
+      dayjs(start).format('DD/MM/YYYY'),
+      dayjs(end).format('DD/MM/YYYY'),
+    )
     getFilteredTask([start, end])
   }
   const handleCopy = async () => {
@@ -99,8 +103,13 @@ const Filter = () => {
 
   const getTaskByUnitType = (unitType: any = 'week') => {
     console.log('🥳🥳🥳 ~~ getTaskByUnitType ~~ unitType--->>>', unitType)
-    const start = dayjs().startOf(unitType)
-    const end = dayjs().endOf(unitType)
+    const start = dayjs().startOf(unitType).add(1, 'day')
+    const end = dayjs().endOf(unitType).add(1, 'day')
+    console.log(
+      '🥳🥳🥳 ~~ handleRangePickerChange ~~ dates--->>>',
+      dayjs(start).format('DD/MM/YYYY'),
+      dayjs(end).format('DD/MM/YYYY'),
+    )
     getFilteredTask([start, end])
   }
 

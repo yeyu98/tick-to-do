@@ -32,6 +32,9 @@ export const deleteTaskLocal = async (id: string) => {
   }
 }
 
+export const importTaskLocal = (taskList: Task[]) =>
+  localforage.setItem(KEY, taskList)
+
 export const swapTaskLocal = async (source: Task, destination: Task) => {
   const _taskList = await getTaskLocal()
   if (_taskList && _taskList?.length > 0) {
