@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 17:06:38
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-10-16 10:48:52
+ * @LastEditTime: 2024-10-26 14:53:50
  * @FilePath: \tick-to-do\src\pages\Filter\Filter.tsx
  * @Description:
  */
@@ -103,8 +103,8 @@ const Filter = () => {
 
   const getTaskByUnitType = (unitType: any = 'week') => {
     console.log('🥳🥳🥳 ~~ getTaskByUnitType ~~ unitType--->>>', unitType)
-    const start = dayjs().startOf(unitType).add(1, 'day')
-    const end = dayjs().endOf(unitType).add(1, 'day')
+    const start = dayjs().startOf(unitType)
+    const end = dayjs().endOf(unitType)
     console.log(
       '🥳🥳🥳 ~~ handleRangePickerChange ~~ dates--->>>',
       dayjs(start).format('DD/MM/YYYY'),
