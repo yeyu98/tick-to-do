@@ -2,17 +2,17 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 16:56:19
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-10-16 10:31:16
+ * @LastEditTime: 2024-10-26 15:47:06
  * @FilePath: \tick-to-do\src\pages\Today\Today.tsx
  * @Description:
  */
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import EmptyData from './components/EmptyData'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import type { DropResult, ResponderProvided } from 'react-beautiful-dnd'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import DragIcon from '@/assets/images/drag.svg'
-import dayjs, { getWeek, isToday } from '@/utils/dayjs'
+import { isToday } from '@/utils/dayjs'
 import ToDoItem from '@/components/ToDoItem/ToDoItem'
 import { nanoid } from 'nanoid'
 import {
@@ -21,6 +21,7 @@ import {
   deleteTaskLocal,
   swapTaskLocal,
 } from '@/utils/localData'
+import { formatDate } from '@/utils/index'
 import type { Task } from '@/utils/localData'
 import styles from './Today.module.less'
 import type { KeyboardEvent } from 'react'
@@ -28,14 +29,7 @@ import type { KeyboardEvent } from 'react'
 function Today() {
   const [taskList, setTaskList] = useState<Task[]>([])
 
-  const formatDate = useCallback(() => {
-    const timestamp = Date.now()
-    const week = getWeek(timestamp)
-    const date = dayjs().format('MM月DD日')
-    return `${date}·今天·${week}`
-  }, [])
-
-  const title = formatDate()
+  const title = formatDate({ extra: '·今天' })
   const taskListRef = useRef<any>([])
 
   const handleDragEnd = (result: DropResult, provided: ResponderProvided) => {

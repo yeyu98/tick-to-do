@@ -2,19 +2,24 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 17:06:38
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-10-26 15:36:49
+ * @LastEditTime: 2024-10-26 16:54:15
  * @FilePath: \tick-to-do\src\pages\Filter\Filter.tsx
  * @Description:
  */
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { Dropdown, Card, Button, Space, DatePicker, message } from 'antd'
 import type { MenuProps } from 'antd'
 import { DownOutlined, CopyOutlined } from '@ant-design/icons'
 import { getTaskLocal } from '@/utils/localData'
 import type { Task } from '@/utils/localData'
 import dayjs from '@/utils/dayjs'
-import { copy } from '@/utils/index'
+import { copy, formatDate } from '@/utils/index'
 import type { Dayjs, UnitType } from 'dayjs'
+import {
+  groupBy as _groupBy,
+  forEach as _forEach,
+  reduce as _reduce,
+} from 'lodash-es'
 import styles from './Filter.module.less'
 
 interface MenuInfo {
@@ -57,6 +62,35 @@ const Filter = () => {
   const [menuInfo, setMenuInfo] = useState<MenuInfo>({ ...dropdownItems[0] })
   const [rangeValue, setRangeValue] = useState<RangeDate>([...defaultRange])
 
+  const getTaskContentText = (list) =>
+    _reduce(
+      list,
+      (prev, next) => {
+        return prev + next.taskContent + '\n'
+      },
+      '',
+    )
+  const taskDateList = useMemo(() => {
+    if (taskList?.length === 0) return []
+    const _taskList = taskList.map((item) => ({
+      ...item,
+      timestamp: formatDate({ timestamp: item.timestamp }),
+    }))
+    const group = _groupBy(_taskList, 'timestamp')
+    const list = []
+
+    _forEach(group, (groupItem) => {
+      const listItem = {
+        taskContent: '',
+        timestamp: groupItem[0].timestamp,
+      }
+      listItem.taskContent = getTaskContentText(groupItem)
+      list.push(listItem)
+    })
+    return list
+  }, [taskList])
+  console.log('🥳🥳🥳 ~~ taskDateList ~~ taskDateList--->>>', taskDateList)
+
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     const currentMenuInfo = dropdownItems.find((item) => item.key == e.key)
     getTaskByUnitType(currentMenuInfo!.key)
@@ -84,11 +118,13 @@ const Filter = () => {
     )
     getFilteredTask([start, end])
   }
-  const handleCopy = async () => {
-    const text = taskList.reduce((prev, next) => {
-      return prev + next.taskContent + '\n'
-    }, '')
-    const success = await copy(text)
+
+  const handleCopy = async (text = '') => {
+    let copyText = text
+    if (!copyText) {
+      copyText = getTaskContentText(taskList)
+    }
+    const success = await copy(copyText)
     if (success) {
       messageApi.success('复制成功')
     }
@@ -146,14 +182,21 @@ const Filter = () => {
           style={{ width: 300 }}
           extra={
             <CopyOutlined
-              onClick={handleCopy}
+              onClick={() => handleCopy('')}
               className={styles['copy-icon']}
             />
           }
         >
-          {taskList.map((task) => (
-            <div className={styles['task-item']} key={task.id}>
-              {task.taskContent}
+          {taskDateList.map((task) => (
+            <div className={styles['task-item']} key={task.timestamp}>
+              <div className={styles['task-date']}>
+                <span className={styles['date']}>{task.timestamp}</span>
+                <CopyOutlined
+                  onClick={() => handleCopy(task.taskContent)}
+                  className={styles['copy-icon']}
+                />
+              </div>
+              <p className={styles['task-content']}>{task.taskContent}</p>
             </div>
           ))}
         </Card>

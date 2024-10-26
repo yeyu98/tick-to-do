@@ -2,10 +2,13 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 09:46:00
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-10-09 17:07:39
+ * @LastEditTime: 2024-10-26 15:46:20
  * @FilePath: \tick-to-do\src\utils\index.ts
  * @Description:
  */
+
+import dayjs, { getWeek } from '@/utils/dayjs'
+
 /**
  * @description 复制
  * @param params 字符串
@@ -62,4 +65,16 @@ export const copy = (data: string | Blob) => {
   }).catch((err) => {
     console.log(err)
   })
+}
+
+export const formatDate = ({
+  timestamp = Date.now(),
+  extra = '',
+}: {
+  timestamp?: number
+  extra?: string
+}) => {
+  const week = getWeek(timestamp)
+  const date = dayjs().format('MM月DD日')
+  return `${date}${extra}·${week}`
 }
