@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 17:06:38
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-10-26 14:53:50
+ * @LastEditTime: 2024-10-26 15:30:34
  * @FilePath: \tick-to-do\src\pages\Filter\Filter.tsx
  * @Description:
  */
@@ -14,19 +14,19 @@ import { getTaskLocal } from '@/utils/localData'
 import type { Task } from '@/utils/localData'
 import dayjs from '@/utils/dayjs'
 import { copy } from '@/utils/index'
-import type { Dayjs } from 'dayjs'
+import type { Dayjs, UnitType } from 'dayjs'
 import styles from './Filter.module.less'
 
 interface MenuInfo {
   label: string
-  key: string
+  key: UnitType
 }
 
 type RangeDate = [start: Dayjs, end: Dayjs]
 
 const { RangePicker } = DatePicker
 
-const dropdownItems = [
+const dropdownItems: MenuInfo[] = [
   {
     label: '按周过滤',
     key: 'week',
@@ -70,9 +70,13 @@ const Filter = () => {
   }
 
   const handleRangePickerChange = async (dates: any) => {
+    let start = dates[0]
+    let end = dates[1]
+    if (menuInfo.key !== 'date' && dayjs(start).isSame(end)) {
+      start = dayjs(start).startOf(menuInfo.key)
+      end = dayjs(start).endOf(menuInfo.key)
+    }
     setRangeValue(dates)
-    const start = dates[0]
-    const end = dates[1]
     console.log(
       '🥳🥳🥳 ~~ handleRangePickerChange ~~ dates--->>>',
       dayjs(start).format('DD/MM/YYYY'),
@@ -106,7 +110,6 @@ const Filter = () => {
     const start = dayjs().startOf(unitType)
     const end = dayjs().endOf(unitType)
     console.log(
-      '🥳🥳🥳 ~~ handleRangePickerChange ~~ dates--->>>',
       dayjs(start).format('DD/MM/YYYY'),
       dayjs(end).format('DD/MM/YYYY'),
     )
