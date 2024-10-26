@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 17:06:38
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-10-26 15:30:34
+ * @LastEditTime: 2024-10-26 15:36:49
  * @FilePath: \tick-to-do\src\pages\Filter\Filter.tsx
  * @Description:
  */
@@ -53,7 +53,6 @@ const defaultRange: RangeDate = [dayjs(), dayjs()]
 
 const Filter = () => {
   const [messageApi, contextHolder] = message.useMessage()
-
   const [taskList, setTaskList] = useState<Task[]>([])
   const [menuInfo, setMenuInfo] = useState<MenuInfo>({ ...dropdownItems[0] })
   const [rangeValue, setRangeValue] = useState<RangeDate>([...defaultRange])
@@ -72,6 +71,7 @@ const Filter = () => {
   const handleRangePickerChange = async (dates: any) => {
     let start = dates[0]
     let end = dates[1]
+    // FIX 解决选中相同的范围会默认指定相同的日期的问题
     if (menuInfo.key !== 'date' && dayjs(start).isSame(end)) {
       start = dayjs(start).startOf(menuInfo.key)
       end = dayjs(start).endOf(menuInfo.key)
@@ -141,7 +141,7 @@ const Filter = () => {
           />
         </div>
         <Card
-          title="本周"
+          title={`本周`}
           bordered={false}
           style={{ width: 300 }}
           extra={
