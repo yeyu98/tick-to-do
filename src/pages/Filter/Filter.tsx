@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 17:06:38
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-10-26 17:10:41
+ * @LastEditTime: 2024-10-26 17:31:16
  * @FilePath: \tick-to-do\src\pages\Filter\Filter.tsx
  * @Description:
  */
@@ -181,28 +181,36 @@ const Filter = () => {
           />
         </div>
         <Card
-          title={`本周`}
-          bordered={false}
-          style={{ width: 300 }}
-          extra={
-            <CopyOutlined
-              onClick={() => handleCopy('')}
-              className={styles['copy-icon']}
-            />
+          title={
+            <>
+              <span style={{ marginRight: '8px' }}>本周</span>
+              <CopyOutlined
+                onClick={() => handleCopy('')}
+                className={styles['copy-icon']}
+              />
+            </>
           }
+          bordered={false}
         >
-          {taskDateList.map((task) => (
-            <div className={styles['task-item']} key={task.timestamp}>
-              <div className={styles['task-date']}>
-                <span className={styles['date']}>{task.timestamp}</span>
-                <CopyOutlined
-                  onClick={() => handleCopy(task.taskContent)}
-                  className={styles['copy-icon']}
-                />
-              </div>
-              <p className={styles['task-content']}>{task.taskContent}</p>
-            </div>
-          ))}
+          <div className={styles['task-list']}>
+            {taskDateList.map((task) => (
+              <Card
+                type="inner"
+                className={styles['task-item']}
+                title={task.timestamp}
+                key={task.timestamp}
+                style={{ width: '300px' }}
+                extra={
+                  <CopyOutlined
+                    onClick={() => handleCopy(task.taskContent)}
+                    className={styles['copy-icon']}
+                  />
+                }
+              >
+                <p className={styles['task-content']}>{task.taskContent}</p>
+              </Card>
+            ))}
+          </div>
         </Card>
       </div>
     </>
