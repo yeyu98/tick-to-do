@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-12 17:06:38
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-10-26 16:54:15
+ * @LastEditTime: 2024-10-26 17:10:41
  * @FilePath: \tick-to-do\src\pages\Filter\Filter.tsx
  * @Description:
  */
@@ -72,10 +72,13 @@ const Filter = () => {
     )
   const taskDateList = useMemo(() => {
     if (taskList?.length === 0) return []
-    const _taskList = taskList.map((item) => ({
-      ...item,
-      timestamp: formatDate({ timestamp: item.timestamp }),
-    }))
+    const _taskList = taskList.map((item) => {
+      console.log(dayjs(item.timestamp).format('DD/MM/YYYY'))
+      return {
+        ...item,
+        timestamp: formatDate({ timestamp: item.timestamp }),
+      }
+    })
     const group = _groupBy(_taskList, 'timestamp')
     const list = []
 
@@ -134,7 +137,8 @@ const Filter = () => {
     const localTaskList = await getTaskLocal()
     if (localTaskList && localTaskList?.length > 0) {
       const filterTaskList = localTaskList?.filter(
-        (item: Task) => dayjs().isBetween(start, end) && item.isFinished,
+        (item: Task) =>
+          dayjs(item.timestamp).isBetween(start, end) && item.isFinished,
       )
       console.log('filterTaskList', filterTaskList)
       setTaskList(filterTaskList)

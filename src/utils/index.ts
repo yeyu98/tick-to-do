@@ -2,7 +2,7 @@
  * @Author: yeyu98
  * @Date: 2024-09-13 09:46:00
  * @LastEditors: yeyu98
- * @LastEditTime: 2024-10-26 15:46:20
+ * @LastEditTime: 2024-10-26 17:04:35
  * @FilePath: \tick-to-do\src\utils\index.ts
  * @Description:
  */
@@ -75,6 +75,6 @@ export const formatDate = ({
   extra?: string
 }) => {
   const week = getWeek(timestamp)
-  const date = dayjs().format('MM月DD日')
+  const date = dayjs(timestamp).format('MM月DD日')
   return `${date}${extra}·${week}`
 }
